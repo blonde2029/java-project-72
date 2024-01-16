@@ -36,6 +36,7 @@ public class App {
     }
 
     public static String getDataBaseUrl() {
+        postgres://postgreesql_project_72_user:bbxOL47b52Bw8eTdPj2evdHxstmMo4JU@dpg-cmibggud3nmc73cii490-a.oregon-postgres.render.com/postgreesql_project_72
         return System.getenv().getOrDefault("JDBC_DATABASE_URL","jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
     }
     private static String readResourceFile(String fileName) throws IOException {
