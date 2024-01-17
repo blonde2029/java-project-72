@@ -3,6 +3,7 @@ package hexlet.code;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import hexlet.code.repository.BaseRepository;
+import hexlet.code.util.NamedRoutes;
 import io.javalin.Javalin;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,28 +13,41 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 import java.sql.SQLException;
+import gg.jte.ContentType;
+import gg.jte.TemplateEngine;
+import io.javalin.rendering.template.JavalinJte;
+import gg.jte.resolve.ResourceCodeResolver;
 @Slf4j
 public class App {
     public static Javalin getApp() throws IOException, SQLException {
       var hikariConfig = new HikariConfig();
-
-        //hikariConfig.setJdbcUrl("jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
-         hikariConfig.setJdbcUrl(getDataBaseUrl());
+      hikariConfig.setJdbcUrl(getDataBaseUrl());
       var dataSource = new HikariDataSource(hikariConfig);
       var sql = readResourceFile("schema.sql");
       log.info(sql);
       try (var connection = dataSource.getConnection();
              var statement = connection.createStatement()) {
             statement.execute(sql);
-        }
-        BaseRepository.dataSource = dataSource;
+      }
+      BaseRepository.dataSource = dataSource;
 
-        var app = Javalin.create(config -> {
+      var app = Javalin.create(config -> {
             config.plugins.enableDevLogging();
-        });
-        app.get("/", ctx -> ctx.result("Hello, World!"));
-        return app;
+      });
+      JavalinJte.init(createTemplateEngine());
+      app.get(NamedRoutes.rootPath(), ctx -> {
+          ctx.render("index.jte");
+      });
+      return app;
     }
+
+    private static TemplateEngine createTemplateEngine() {
+        ClassLoader classLoader = App.class.getClassLoader();
+        ResourceCodeResolver codeResolver = new ResourceCodeResolver("templates", classLoader);
+        TemplateEngine templateEngine = TemplateEngine.create(codeResolver, ContentType.Html);
+        return templateEngine;
+    }
+
 
     public static String getDataBaseUrl() {
         postgres://postgreesql_project_72_user:bbxOL47b52Bw8eTdPj2evdHxstmMo4JU@dpg-cmibggud3nmc73cii490-a.oregon-postgres.render.com/postgreesql_project_72
