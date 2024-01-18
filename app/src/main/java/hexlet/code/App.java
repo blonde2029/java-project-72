@@ -2,6 +2,7 @@ package hexlet.code;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import hexlet.code.controller.UrlsController;
 import hexlet.code.repository.BaseRepository;
 import hexlet.code.util.NamedRoutes;
 import io.javalin.Javalin;
@@ -36,8 +37,12 @@ public class App {
       });
       JavalinJte.init(createTemplateEngine());
       app.get(NamedRoutes.rootPath(), ctx -> {
-          ctx.render("index.jte");
+          ctx.consumeSessionAttribute("flash");
+          ctx.render("pages/mainPage.jte");
       });
+      app.post(NamedRoutes.urlsPath(), UrlsController::create);
+      app.get(NamedRoutes.urlsPath(), UrlsController::index);
+      app.get(NamedRoutes.urlPath("{id}"), UrlsController::show);
       return app;
     }
 
