@@ -1,9 +1,10 @@
 @import hexlet.code.util.NamedRoutes;
 @import hexlet.code.dto.UrlPage
+@import java.time.format.DateTimeFormatter
 @import java.util.Date
 
 @param UrlPage page
-
+!{var formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");}
 @template.layout.page(page = page, content = @`
 <body class="d-flex flex-column min-vh-100">
 <main class="flex-grow-1">
@@ -22,7 +23,8 @@
                 </tr>
                 <tr>
                     <td>Дата создания</td>
-                    <td>${page.getUrl().getCreatedAt().toString()}</td>
+<%--                    <td>${page.getUrl().getCreatedAt().toString()}</td>--%>
+                    <td>${page.getUrl().getCreatedAt().toLocalDateTime().format(formatter)}</td>
                 </tr>
                 </tbody>
             </table>

@@ -21,29 +21,29 @@ import gg.jte.resolve.ResourceCodeResolver;
 @Slf4j
 public class App {
     public static Javalin getApp() throws IOException, SQLException {
-      var hikariConfig = new HikariConfig();
-      hikariConfig.setJdbcUrl(getDataBaseUrl());
-      var dataSource = new HikariDataSource(hikariConfig);
-      var sql = readResourceFile("schema.sql");
-      log.info(sql);
-      try (var connection = dataSource.getConnection();
+        var hikariConfig = new HikariConfig();
+        hikariConfig.setJdbcUrl(getDataBaseUrl());
+        var dataSource = new HikariDataSource(hikariConfig);
+        var sql = readResourceFile("schema.sql");
+        log.info(sql);
+        try (var connection = dataSource.getConnection();
              var statement = connection.createStatement()) {
             statement.execute(sql);
-      }
-      BaseRepository.dataSource = dataSource;
+        }
+        BaseRepository.dataSource = dataSource;
 
-      var app = Javalin.create(config -> {
+        var app = Javalin.create(config -> {
             config.plugins.enableDevLogging();
-      });
-      JavalinJte.init(createTemplateEngine());
-      app.get(NamedRoutes.rootPath(), ctx -> {
-          ctx.consumeSessionAttribute("flash");
-          ctx.render("pages/mainPage.jte");
-      });
-      app.post(NamedRoutes.urlsPath(), UrlsController::create);
-      app.get(NamedRoutes.urlsPath(), UrlsController::index);
-      app.get(NamedRoutes.urlPath("{id}"), UrlsController::show);
-      return app;
+        });
+        JavalinJte.init(createTemplateEngine());
+        app.get(NamedRoutes.rootPath(), ctx -> {
+            ctx.consumeSessionAttribute("flash");
+            ctx.render("pages/mainPage.jte");
+        });
+        app.post(NamedRoutes.urlsPath(), UrlsController::create);
+        app.get(NamedRoutes.urlsPath(), UrlsController::index);
+        app.get(NamedRoutes.urlPath("{id}"), UrlsController::show);
+        return app;
     }
 
     private static TemplateEngine createTemplateEngine() {
@@ -55,8 +55,8 @@ public class App {
 
 
     public static String getDataBaseUrl() {
-        postgres://postgreesql_project_72_user:bbxOL47b52Bw8eTdPj2evdHxstmMo4JU@dpg-cmibggud3nmc73cii490-a.oregon-postgres.render.com/postgreesql_project_72
-        return System.getenv().getOrDefault("JDBC_DATABASE_URL","jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
+        return System.getenv().getOrDefault("JDBC_DATABASE_URL",
+                 "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
     }
     private static String readResourceFile(String fileName) throws IOException {
         var inputStream = App.class.getClassLoader().getResourceAsStream(fileName);

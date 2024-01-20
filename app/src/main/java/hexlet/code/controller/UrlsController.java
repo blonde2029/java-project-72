@@ -12,7 +12,6 @@ import io.javalin.validation.ValidationException;
 
 import java.net.URI;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.sql.Timestamp;
@@ -61,7 +60,8 @@ public class UrlsController {
 
     public static void show(Context ctx) throws SQLException {
         var id = ctx.pathParamAsClass("id", Long.class).get();
-        var url = UrlsRepository.find(id).orElseThrow(() -> new NotFoundResponse("Entity with id " + id + " not found"));
+        var url = UrlsRepository.find(id).orElseThrow(() ->
+                new NotFoundResponse("Entity with id " + id + " not found"));
         var page = new UrlPage(url);
         ctx.render("pages/urlPage.jte", Collections.singletonMap("page", page));
     }
