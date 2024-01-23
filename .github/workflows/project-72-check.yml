@@ -1,23 +1,30 @@
 name: project-72-check
-on: push
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout project sources
-        uses: actions/checkout@v3
-      - name: Setup Java JDK 20
+      - uses: actions/checkout@v3
+      - name: Set up JDK 20
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
           java-version: '20'
-      - name: Setup Gradle
+          distribution: 'temurin'
+      - name: Build with Gradle
         uses: gradle/gradle-build-action@v2
         with:
           arguments: build
           build-root-directory: app
-      - name: Test code coverage
+      - name: Publish code coverage
         if: ${{ github.event_name == 'push' }}
         uses: paambaati/codeclimate-action@v5.0.0
         env:
