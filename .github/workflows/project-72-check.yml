@@ -1,37 +1,29 @@
-name: project-72-check
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+name: project-78-check
+on: push
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up JDK 20
+      - name: Checkout project sources
+        uses: actions/checkout@v3
+      - name: Setup Java JDK 20
         uses: actions/setup-java@v3
         with:
-          java-version: '20'
           distribution: 'temurin'
-      - name: Build with Gradle
+          java-version: '20'
+      - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
         with:
           gradle-version: 8.3
           arguments: build
           build-root-directory: app
-      - name: Publish code coverage
-        if: ${{ github.event_name == 'push' }}
+      - name: Test code coverage
         uses: paambaati/codeclimate-action@v5.0.0
         env:
-          CC_TEST_REPORTER_ID: ${{secrets.TESTCOVERAGE_72}}
-          JACOCO_SOURCE_PATH: ${{github.workspace}}/app/src/main/java
+          CC_TEST_REPORTER_ID: ${{ secrets.TESTCOVERAGE_72 }}
+          JACOCO_SOURCE_PATH: "${{github.workspace}}/app/src/main/java"
         with:
-          coverageCommand: make report
-          debug: true
+          workingDirectory: app
+          coverageCommand: make test-report
           coverageLocations: ${{github.workspace}}/app/build/reports/jacoco/test/jacocoTestReport.xml:jacoco
