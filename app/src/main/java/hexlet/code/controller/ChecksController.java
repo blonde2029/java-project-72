@@ -4,19 +4,18 @@ import hexlet.code.dto.UrlPage;
 import hexlet.code.model.UrlCheck;
 import hexlet.code.repository.ChecksRepository;
 import hexlet.code.repository.UrlsRepository;
-import hexlet.code.util.NamedRoutes;
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.validation.ValidationException;
-import kong.unirest.HttpResponse;
-import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import org.jsoup.Jsoup;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 public class ChecksController {
     public static void create(Context ctx) throws SQLException {
@@ -43,6 +42,33 @@ public class ChecksController {
             var checks = ChecksRepository.getEntitiesById(urlId);
             var page = new UrlPage(url, checks);
             ctx.render("pages/urlPage.jte", Collections.singletonMap("page", page));
+        }
+    }
+
+    public static String getLatestCheckStatus(Long keyId) {
+        List<UrlCheck> checks = null;
+        try {
+            checks = ChecksRepository.getEntitiesById(keyId);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        if (!checks.isEmpty()) {
+            return checks.stream().max(Comparator.comparing(UrlCheck::getCreatedAt)).get().getStatusCode().toString();
+        } else {
+            return null;
+        }
+    }
+
+    public static Timestamp getLatestCheckDate(Long keyId) {
+        try {
+            var checks = ChecksRepository.getEntitiesById(keyId);
+            if (!checks.isEmpty()) {
+                return checks.stream().max(Comparator.comparing(UrlCheck::getCreatedAt)).get().getCreatedAt();
+            } else {
+                return null;
+            }
+        } catch (SQLException e) {
+            return null;
         }
     }
 }

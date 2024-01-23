@@ -1,10 +1,11 @@
-
 @import hexlet.code.util.NamedRoutes
 @import hexlet.code.model.Url
 @import hexlet.code.dto.UrlsPage
+@import hexlet.code.controller.ChecksController
 
 @param Url url
 @param UrlsPage page
+!{var formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");}
 @template.layout.page(page = page, content = @`
     <body class="d-flex flex-column min-vh-100">
     <main class="flex-grow-1">
@@ -30,7 +31,6 @@
                     @for (var url : page.getUrls())
                     <tbody>
                     <tr>
-
                         <td>
                             ${url.getId()}
                         </td>
@@ -38,8 +38,14 @@
                             <a href="/urls/${url.getId()}">${url.getName()}</a>
                         </td>
                         <td>
+                            @if (ChecksController.getLatestCheckDate(url.getId()) != null)
+                            ${ChecksController.getLatestCheckDate(url.getId()).toLocalDateTime().format(formatter)}
+                            @endif
                         </td>
                         <td>
+                            @if (ChecksController.getLatestCheckStatus(url.getId()) != null)
+                            ${ChecksController.getLatestCheckStatus(url.getId())}
+                            @endif
                         </td>
                     </tr>
                     </tbody>
@@ -52,3 +58,4 @@
     </body>
 
 `)
+

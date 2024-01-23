@@ -4,6 +4,7 @@ import hexlet.code.dto.MainPage;
 import hexlet.code.dto.UrlPage;
 import hexlet.code.dto.UrlsPage;
 import hexlet.code.model.Url;
+import hexlet.code.model.UrlCheck;
 import hexlet.code.repository.ChecksRepository;
 import hexlet.code.repository.UrlsRepository;
 import hexlet.code.util.NamedRoutes;
@@ -14,6 +15,7 @@ import io.javalin.validation.ValidationException;
 import java.net.URI;
 import java.sql.SQLException;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.sql.Timestamp;
 
@@ -64,6 +66,7 @@ public class UrlsController {
         var url = UrlsRepository.find(id).orElseThrow(() ->
                 new NotFoundResponse("Entity with id " + id + " not found"));
         var checks = ChecksRepository.getEntitiesById(id);
+        Collections.sort(checks, Comparator.comparingLong(UrlCheck::getId).reversed());
         var page = new UrlPage(url, checks);
         page.setFlash(ctx.consumeSessionAttribute("flash"));
         ctx.render("pages/urlPage.jte", Collections.singletonMap("page", page));

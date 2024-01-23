@@ -13,7 +13,7 @@ public final class JteurlPageGenerated {
 			public void writeTo(gg.jte.html.HtmlTemplateOutput jteOutput) {
 				jteOutput.writeContent("\n<body class=\"d-flex flex-column min-vh-100\">\n<main class=\"flex-grow-1\">\n    ");
 				if (page != null && page.getFlash() != null) {
-					jteOutput.writeContent("\n        <div class=\"rounded-0 m-0 alert alert-dismissible fade show alert-danger\" role=\"alert\">\n            <p class=\"m-0\">");
+					jteOutput.writeContent("\n        <div class=\"rounded-0 m-0 alert alert-dismissible fade show alert-info\" role=\"alert\">\n            <p class=\"m-0\">");
 					jteOutput.setContext("p", null);
 					jteOutput.writeUserContent(page.getFlash());
 					jteOutput.writeContent("</p>\n            <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"alert\" aria-label=\"Close\"></button>\n        </div>\n    ");
