@@ -8,6 +8,12 @@
 @template.layout.page(page = page, content = @`
 <body class="d-flex flex-column min-vh-100">
 <main class="flex-grow-1">
+    @if (page != null && page.getFlash() != null)
+        <div class="rounded-0 m-0 alert alert-dismissible fade show alert-info" role="alert">
+            <p class="m-0">${page.getFlash()}</p>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
     <section>
         <div class="container-lg mt-5">
             <h1>Сайт: ${page.getUrl().getName()}</h1>
@@ -23,14 +29,13 @@
                 </tr>
                 <tr>
                     <td>Дата создания</td>
-<%--                    <td>${page.getUrl().getCreatedAt().toString()}</td>--%>
                     <td>${page.getUrl().getCreatedAt().toLocalDateTime().format(formatter)}</td>
                 </tr>
                 </tbody>
             </table>
 
             <h2 class="mt-5">Проверки</h2>
-            <form method="post" action="/urls/1/checks">
+            <form method="post" action="/urls/${page.getUrl().getId()}/checks">
                 <button type="submit" class="btn btn-primary">Запустить проверку</button>
             </form>
 
@@ -44,7 +49,28 @@
                     <th class="col-2">Дата проверки</th>
                 </tr></thead>
                 <tbody>
-
+                @for (var check : page.getUrlChecks())
+                <tr>
+                    <td>
+                        ${check.getId()}
+                    </td>
+                    <td>
+                        ${check.getStatusCode()}
+                    </td>
+                    <td>
+                        ${check.getTitle()}
+                    </td>
+                    <td>
+                        ${check.getH1()}
+                    </td>
+                    <td>
+                        ${check.getDescription()}
+                    </td>
+                    <td>
+                        ${check.getCreatedAt().toLocalDateTime().format(formatter)}
+                    </td>
+                </tr>
+                    @endfor
                 </tbody>
             </table>
         </div>

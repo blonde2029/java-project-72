@@ -4,6 +4,7 @@ import hexlet.code.dto.MainPage;
 import hexlet.code.dto.UrlPage;
 import hexlet.code.dto.UrlsPage;
 import hexlet.code.model.Url;
+import hexlet.code.repository.ChecksRepository;
 import hexlet.code.repository.UrlsRepository;
 import hexlet.code.util.NamedRoutes;
 import io.javalin.http.Context;
@@ -62,7 +63,9 @@ public class UrlsController {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         var url = UrlsRepository.find(id).orElseThrow(() ->
                 new NotFoundResponse("Entity with id " + id + " not found"));
-        var page = new UrlPage(url);
+        var checks = ChecksRepository.getEntitiesById(id);
+        var page = new UrlPage(url, checks);
+        page.setFlash(ctx.consumeSessionAttribute("flash"));
         ctx.render("pages/urlPage.jte", Collections.singletonMap("page", page));
     }
 }

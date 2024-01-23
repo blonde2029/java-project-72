@@ -32,7 +32,13 @@ dependencies {
     implementation("io.javalin:javalin-bundle:5.6.2")
     implementation("io.javalin:javalin-rendering:5.6.2")
     implementation("org.postgresql:postgresql:42.7.1")
-    
+//    implementation("com.konghq:unirest-java-bom:4.0.12")
+//    implementation("com.konghq:unirest-java-core")
+//    implementation("com.konghq:unirest-object-mappers-gson")
+//    implementation("com.konghq:unirest-objectmapper-jackson")
+    implementation("com.konghq:unirest-java:3.14.1")
+    implementation ("org.jsoup:jsoup:1.17.1")
+
     testImplementation("org.assertj:assertj-core:3.24.2")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
