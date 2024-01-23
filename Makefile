@@ -1,16 +1,16 @@
 run-dist:
-	./build/install/app/bin/app
+	./app/build/install/app/bin/app
 run:
-	./gradlew run
+	./app/gradlew run
 build:
-	./gradlew clean
-	./gradlew build
+	./app/gradlew clean
+	./app/gradlew build
 test:
-	./gradlew test
+	./app/gradlew test
 lint:
-	./gradlew checkstyleMain
+	./app/gradlew checkstyleMain
 report:
-	./gradlew jacocoTestReport
+	./app/gradlew jacocoTestReport
 
 .PHONY: build
 .PHONY: test
