@@ -9,8 +9,8 @@ test:
 	./gradlew test
 lint:
 	./gradlew checkstyleMain
-test-report:
-	./gradlew jacocoTestReport
+report:
+	./app/gradlew -p app jacocoTestReport
 
 .PHONY: build
 .PHONY: test

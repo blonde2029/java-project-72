@@ -25,13 +25,13 @@ jobs:
           gradle-version: 8.3
           arguments: build
           build-root-directory: app
-      - name: Publish code coverage
+      - name: Test code coverage
         if: ${{ github.event_name == 'push' }}
         uses: paambaati/codeclimate-action@v5.0.0
         env:
           CC_TEST_REPORTER_ID: ${{secrets.TESTCOVERAGE_72}}
           JACOCO_SOURCE_PATH: ${{github.workspace}}/app/src/main/java
         with:
-          coverageCommand: make test-report
+          coverageCommand: make report
           debug: true
           coverageLocations: ${{github.workspace}}/app/build/reports/jacoco/test/jacocoTestReport.xml:jacoco
