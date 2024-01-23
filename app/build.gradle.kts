@@ -4,11 +4,11 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 plugins {
     id("java")
     id("checkstyle")
+    id("jacoco")
     application
-//    kotlin("plugin.lombok") version "1.9.21"
     id("io.freefair.lombok") version "8.3"
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("com.github.ben-manes.versions") version "0.47.0"
+//    id("com.github.ben-manes.versions") version "0.47.0"
 }
 
 group = "hexlet.code"
@@ -32,26 +32,27 @@ dependencies {
     implementation("io.javalin:javalin-bundle:5.6.2")
     implementation("io.javalin:javalin-rendering:5.6.2")
     implementation("org.postgresql:postgresql:42.7.1")
-//    implementation("com.konghq:unirest-java-bom:4.0.12")
-//    implementation("com.konghq:unirest-java-core")
-//    implementation("com.konghq:unirest-object-mappers-gson")
-//    implementation("com.konghq:unirest-objectmapper-jackson")
     implementation("com.konghq:unirest-java:3.14.1")
     implementation ("org.jsoup:jsoup:1.17.1")
+    implementation("org.jacoco:org.jacoco.core:0.8.10")
 
     testImplementation("org.assertj:assertj-core:3.24.2")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
 }
 
+tasks.jacocoTestReport {
+    reports {
+        xml.required = true
+    }
+}
+
 tasks.test {
+    finalizedBy(tasks.jacocoTestReport)
     useJUnitPlatform()
-    // https://technology.lastminute.com/junit5-kotlin-and-gradle-dsl/
     testLogging {
         exceptionFormat = TestExceptionFormat.FULL
         events = mutableSetOf(TestLogEvent.FAILED, TestLogEvent.PASSED, TestLogEvent.SKIPPED)
-        // showStackTraces = true
-        // showCauses = true
         showStandardStreams = true
     }
 }
