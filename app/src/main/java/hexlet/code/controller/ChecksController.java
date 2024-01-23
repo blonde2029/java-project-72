@@ -20,8 +20,8 @@ import java.util.List;
 public class ChecksController {
     public static void create(Context ctx) throws SQLException {
         var urlId = ctx.pathParamAsClass("id", Long.class).get();
-        var url = UrlsRepository.find(urlId).orElseThrow(() -> new NotFoundResponse("Entity with id " +
-                urlId + " not found"));
+        var url = UrlsRepository.find(urlId).orElseThrow(() -> new NotFoundResponse("Entity with id "
+                + urlId + " not found"));
         var urlPath = url.getName();
         var response = Unirest.get(urlPath).asString();
         var body = response.getBody();

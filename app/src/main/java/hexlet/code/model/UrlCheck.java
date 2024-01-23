@@ -1,6 +1,5 @@
 package hexlet.code.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +10,9 @@ import java.sql.Timestamp;
 public class UrlCheck {
     private Long id;
     private Timestamp createdAt;
-    private String title, h1, description;
+    private String title;
+    private String h1;
+    private String description;
     private Integer statusCode;
 
     private Long urlId;

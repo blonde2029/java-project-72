@@ -1,29 +1,27 @@
 package hexlet.code.repository;
 
-import hexlet.code.model.Url;
 import hexlet.code.model.UrlCheck;
 
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ChecksRepository extends BaseRepository {
 
     private static List<UrlCheck> entities = new ArrayList<>();
 
     public static void save(UrlCheck urlCheck) throws SQLException {
-        var sql = "INSERT INTO url_checks(title, created_at, h1, description, status_code, url_id) " +
-                "VALUES(?, ?, ?, ?, ?, ?)";
+        var sql = "INSERT INTO url_checks(title, created_at, h1, description, status_code, url_id) "
+                + "VALUES(?, ?, ?, ?, ?, ?)";
         try (var conn = dataSource.getConnection();
-        var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, urlCheck.getTitle());
             stmt.setTimestamp(2, urlCheck.getCreatedAt());
             stmt.setString(3, urlCheck.getH1());
             stmt.setString(4, urlCheck.getDescription());
             stmt.setInt(5, urlCheck.getStatusCode());
-            stmt.setLong( 6, urlCheck.getUrlId());
+            stmt.setLong(6, urlCheck.getUrlId());
             stmt.executeUpdate();
             var generatedKeys = stmt.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -41,7 +39,7 @@ public class ChecksRepository extends BaseRepository {
         List<UrlCheck> result = new ArrayList<>();
         var sql = "SELECT * FROM url_checks WHERE url_id = ?";
         try (var conn = dataSource.getConnection();
-        var stmt = conn.prepareStatement(sql)) {
+            var stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, keyId);
             var resultSet = stmt.executeQuery();
             while (resultSet.next()) {
