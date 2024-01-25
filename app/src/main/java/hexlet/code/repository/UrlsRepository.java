@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class UrlsRepository extends BaseRepository {
-    private static List<Url> enteties = new ArrayList<>();
 
     public static void save(Url url) throws SQLException {
         var sql = "INSERT INTO urls(name, created_at) VALUES (?,?)";
@@ -25,9 +24,6 @@ public class UrlsRepository extends BaseRepository {
                 throw new SQLException("DB have not returned ID after saving an entity");
             }
         }
-        url.setId((long) enteties.size() + 1);
-        enteties.add(url);
-
     }
 
     public static List<Url> getEnteties() throws SQLException {
