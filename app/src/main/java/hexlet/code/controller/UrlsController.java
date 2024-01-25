@@ -21,6 +21,10 @@ import java.sql.Timestamp;
 
 public class UrlsController {
 
+    public static void root(Context ctx) {
+        ctx.consumeSessionAttribute("flash");
+        ctx.render("pages/mainPage.jte");
+    }
     public static void create(Context ctx) throws SQLException {
         var urlPath = ctx.formParam("url");
         var date = new Date();

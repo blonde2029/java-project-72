@@ -37,10 +37,7 @@ public class App {
             config.plugins.enableDevLogging();
         });
         JavalinJte.init(createTemplateEngine());
-        app.get(NamedRoutes.rootPath(), ctx -> {
-            ctx.consumeSessionAttribute("flash");
-            ctx.render("pages/mainPage.jte");
-        });
+        app.get(NamedRoutes.rootPath(), UrlsController::root);
         app.post(NamedRoutes.urlsPath(), UrlsController::create);
         app.get(NamedRoutes.urlsPath(), UrlsController::index);
         app.get(NamedRoutes.urlPath("{id}"), UrlsController::show);
@@ -60,7 +57,7 @@ public class App {
         return System.getenv().getOrDefault("JDBC_DATABASE_URL",
                  "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
     }
-    private static String readResourceFile(String fileName) throws IOException {
+    public static String readResourceFile(String fileName) throws IOException {
         var inputStream = App.class.getClassLoader().getResourceAsStream(fileName);
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             return reader.lines().collect(Collectors.joining("\n"));
@@ -70,6 +67,7 @@ public class App {
     private static int getPort() {
         String port = System.getenv().getOrDefault("PORT", "7070");
         return Integer.valueOf(port);
+
     }
 
     public static void main(String[] args) throws IOException, SQLException {
