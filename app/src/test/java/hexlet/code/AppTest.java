@@ -61,7 +61,6 @@ public class AppTest {
         JavalinTest.test(app, ((server, client) -> {
             var requestBody = "url=https://www.ya.ru";
             client.post(NamedRoutes.urlsPath(), requestBody);
-
             var response = client.get(NamedRoutes.urlPath("1"));
             assertThat(response.code()).isEqualTo(200);
             assertThat(response.body().string()).contains("https://www.ya.ru");
