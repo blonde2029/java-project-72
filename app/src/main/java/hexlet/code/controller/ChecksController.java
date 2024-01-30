@@ -12,7 +12,6 @@ import kong.unirest.Unirest;
 import org.jsoup.Jsoup;
 
 import java.net.URI;
-import java.net.UnknownHostException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Collections;
