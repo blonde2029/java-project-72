@@ -23,10 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AppTest {
 //    Javalin app;
     private static Javalin app;
-    private static String baseUrl;
-    private static MockWebServer mockServer;
-    private static int port;
-
 
     @BeforeEach
     public final void beforeEach() throws SQLException, IOException {
