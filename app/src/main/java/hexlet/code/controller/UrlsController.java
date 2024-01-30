@@ -33,7 +33,7 @@ public class UrlsController {
         try {
             var uri = URI.create(urlPath);
 
-            var name = uri.getScheme() + "://" + uri.getAuthority();// + (uri.getPort() > 0 ? ":" + uri.getPort() : "");
+            var name = uri.getScheme() + "://" + uri.getAuthority();
             var url = new Url(name, createdAt);
 
             if (uri.getScheme() == null) {
