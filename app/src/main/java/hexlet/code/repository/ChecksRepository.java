@@ -57,6 +57,4 @@ public class ChecksRepository extends BaseRepository {
         }
         return result;
     }
-
-
 }

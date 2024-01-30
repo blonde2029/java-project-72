@@ -52,11 +52,11 @@ public class App {
         return templateEngine;
     }
 
-
     public static String getDataBaseUrl() {
         return System.getenv().getOrDefault("JDBC_DATABASE_URL",
                  "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
     }
+
     public static String readResourceFile(String fileName) throws IOException {
         var inputStream = App.class.getClassLoader().getResourceAsStream(fileName);
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {

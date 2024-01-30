@@ -25,6 +25,7 @@ public class UrlsController {
         ctx.consumeSessionAttribute("flash");
         ctx.render("pages/mainPage.jte");
     }
+
     public static void create(Context ctx) throws SQLException {
         var urlPath = ctx.formParam("url");
         var date = new Date();

@@ -2,13 +2,11 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-    id("java")
     id("checkstyle")
     id("jacoco")
     application
     id("io.freefair.lombok") version "8.3"
     id("com.github.johnrengelman.shadow") version "8.1.1"
-//    id("com.github.ben-manes.versions") version "0.47.0"
 }
 
 group = "hexlet.code"
