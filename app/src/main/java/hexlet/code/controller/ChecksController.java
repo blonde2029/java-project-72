@@ -52,31 +52,4 @@ public class ChecksController {
             }
         }
     }
-
-    public static String getLatestCheckStatus(Long keyId) {
-        List<UrlCheck> checks = null;
-        try {
-            checks = ChecksRepository.getEntitiesById(keyId);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        if (!checks.isEmpty()) {
-            return checks.stream().max(Comparator.comparing(UrlCheck::getCreatedAt)).get().getStatusCode().toString();
-        } else {
-            return null;
-        }
-    }
-
-    public static Timestamp getLatestCheckDate(Long keyId) {
-        try {
-            var checks = ChecksRepository.getEntitiesById(keyId);
-            if (!checks.isEmpty()) {
-                return checks.stream().max(Comparator.comparing(UrlCheck::getCreatedAt)).get().getCreatedAt();
-            } else {
-                return null;
-            }
-        } catch (SQLException e) {
-            return null;
-        }
-    }
 }
