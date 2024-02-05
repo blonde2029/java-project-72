@@ -13,10 +13,7 @@ import org.jsoup.Jsoup;
 
 import java.net.URI;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 public class ChecksController {
     public static void create(Context ctx) throws SQLException {
