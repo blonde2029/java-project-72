@@ -17,7 +17,7 @@ public class UrlCheck {
 
     private Long urlId;
 
-    public UrlCheck(Timestamp createdAt, String title, String h1, String description,
+    public UrlCheck(String title, String h1, String description,
                     Integer statusCode, Long urlId) {
         this.createdAt = createdAt;
         this.title = title;

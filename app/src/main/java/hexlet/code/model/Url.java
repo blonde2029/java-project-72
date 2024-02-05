@@ -12,7 +12,7 @@ public final class Url {
     private String name;
     private Timestamp createdAt;
 
-    public Url(String name, Timestamp createdAt) {
+    public Url(String name) {
         this.id = id;
         this.name = name;
         this.createdAt = createdAt;

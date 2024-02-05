@@ -1,16 +1,14 @@
 @import hexlet.code.util.NamedRoutes
-@import hexlet.code.model.Url
 @import hexlet.code.dto.UrlsPage
-@import hexlet.code.controller.ChecksController
+@import hexlet.code.repository.ChecksRepository
 
-@param Url url
 @param UrlsPage page
 !{var formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");}
 @template.layout.page(page = page, content = @`
     <body class="d-flex flex-column min-vh-100">
     <main class="flex-grow-1">
         @if (page != null && page.getFlash() != null)
-        <div class="rounded-0 m-0 alert alert-dismissible fade show alert-info" role="alert">
+        <div class="rounded-0 m-0 alert alert-dismissible fade show alert-${page.getFlashType()}" role="alert">
             <p class="m-0">${page.getFlash()}</p>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
@@ -35,16 +33,22 @@
                             ${url.getId()}
                         </td>
                         <td>
-                            <a href="/urls/${url.getId()}">${url.getName()}</a>
+                            <a href="${NamedRoutes.urlPath(url.getId())}">${url.getName()}</a>
                         </td>
                         <td>
-                            @if (ChecksController.getLatestCheckDate(url.getId()) != null)
-                            ${ChecksController.getLatestCheckDate(url.getId()).toLocalDateTime().format(formatter)}
+                            @if (ChecksRepository.getLastCheck(url.getId()).isPresent())
+                            ${ChecksRepository.getLastCheck(url.getId())
+                                .get()
+                                .getCreatedAt()
+                                .toLocalDateTime()
+                                .format(formatter)}
                             @endif
                         </td>
                         <td>
-                            @if (ChecksController.getLatestCheckStatus(url.getId()) != null)
-                            ${ChecksController.getLatestCheckStatus(url.getId())}
+                            @if (ChecksRepository.getLastCheck(url.getId()).isPresent())
+                            ${ChecksRepository.getLastCheck(url.getId())
+                                .get()
+                                .getStatusCode()}
                             @endif
                         </td>
                     </tr>

@@ -8,14 +8,8 @@
 @template.layout.page(page = page, content = @`
 <body class="d-flex flex-column min-vh-100">
 <main class="flex-grow-1">
-    @if (page != null && page.getFlash() != null && page.getFlash().equals("Страница успешно проверена"))
-        <div class="rounded-0 m-0 alert alert-dismissible fade show alert-info" role="alert">
-            <p class="m-0">${page.getFlash()}</p>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    @endif
-    @if (page != null && page.getFlash() != null && !page.getFlash().equals("Страница успешно проверена"))
-        <div class="rounded-0 m-0 alert alert-dismissible fade show alert-danger" role="alert">
+    @if (page != null && page.getFlash() != null)
+        <div class="rounded-0 m-0 alert alert-dismissible fade show alert-${page.getFlashType()}" role="alert">
             <p class="m-0">${page.getFlash()}</p>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>

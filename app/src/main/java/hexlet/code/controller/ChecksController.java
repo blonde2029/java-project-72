@@ -16,7 +16,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 public class ChecksController {
@@ -28,6 +27,7 @@ public class ChecksController {
         var uri = URI.create(urlPath);
         if (uri.getHost() == null) {
             ctx.sessionAttribute("flash", "Некорректный адрес");
+            ctx.sessionAttribute("flashType", "alert");
             ctx.redirect(NamedRoutes.urlPath(url.getId()));
         } else {
             var response = Unirest.get(urlPath).asString();
@@ -37,13 +37,13 @@ public class ChecksController {
             var title = responsePage.getElementsByTag("title").text();
             var h1 = responsePage.getElementsByTag("h1").text();
             String description = responsePage.select("meta[name=description]").attr("content");
-            var createdAt = new Timestamp(new Date().getTime());
 
-            var urlCheck = new UrlCheck(createdAt, title, h1, description, statusCode, urlId);
+            var urlCheck = new UrlCheck(title, h1, description, statusCode, urlId);
 
             try {
                 ChecksRepository.save(urlCheck);
                 ctx.sessionAttribute("flash", "Страница успешно проверена");
+                ctx.sessionAttribute("flashType", "success");
                 ctx.redirect("/urls/" + url.getId());
             } catch (ValidationException e) {
                 var checks = ChecksRepository.getEntitiesById(urlId);

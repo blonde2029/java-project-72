@@ -2,11 +2,13 @@ package hexlet.code.repository;
 
 import hexlet.code.model.Url;
 
+import java.util.Date;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.sql.Timestamp;
 
 public class UrlsRepository extends BaseRepository {
 
@@ -15,11 +17,14 @@ public class UrlsRepository extends BaseRepository {
         try (var conn = dataSource.getConnection();
             var stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             stmt.setString(1, url.getName());
-            stmt.setTimestamp(2, url.getCreatedAt());
+            var date = new Date();
+            var createdAt = new Timestamp(date.getTime());
+            stmt.setTimestamp(2, createdAt);
             stmt.executeUpdate();
             var generatedKeys = stmt.getGeneratedKeys();
             if (generatedKeys.next()) {
                 url.setId(generatedKeys.getLong(1));
+                url.setCreatedAt(createdAt);
             } else {
                 throw new SQLException("DB have not returned ID after saving an entity");
             }
@@ -35,9 +40,9 @@ public class UrlsRepository extends BaseRepository {
             while (resultSet.next()) {
                 var id = resultSet.getLong("id");
                 var name = resultSet.getString("name");
-                var createdAt = resultSet.getTimestamp("created_at");
-                var url = new Url(name, createdAt);
+                var url = new Url(name);
                 url.setId(id);
+                url.setCreatedAt(resultSet.getTimestamp("created_at"));
                 result.add(url);
             }
             return result;
@@ -62,9 +67,9 @@ public class UrlsRepository extends BaseRepository {
             var resultSet = stmt.executeQuery();
             if (resultSet.next()) {
                 var name = resultSet.getString("name");
-                var createdAt = resultSet.getTimestamp("created_at");
-                var url = new Url(name, createdAt);
+                var url = new Url(name);
                 url.setId(id);
+                url.setCreatedAt(resultSet.getTimestamp("created_at"));
                 return Optional.of(url);
             }
         }

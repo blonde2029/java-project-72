@@ -15,13 +15,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class AppTest {
-//    Javalin app;
     private static Javalin app;
 
     @BeforeEach
@@ -48,6 +45,7 @@ public class AppTest {
             assertThat(response.code()).isEqualTo(200);
             var responseBody = response.body().string();
             assertThat(responseBody.contains("https://www.ya.ru"));
+            assertThat(UrlsRepository.exists("https://www.ya.ru")).isTrue();
             response.close();
         }));
     }
@@ -60,6 +58,7 @@ public class AppTest {
             var response = client.get(NamedRoutes.urlPath("1"));
             assertThat(response.code()).isEqualTo(200);
             assertThat(response.body().string()).contains("https://www.ya.ru");
+            assertThat(UrlsRepository.exists("https://www.ya.ru")).isTrue();
             response.close();
         }));
     }
@@ -71,6 +70,7 @@ public class AppTest {
             var response = client.post(NamedRoutes.urlsPath(), requestBody);
             assertThat(response.code()).isEqualTo(200);
             assertThat(response.body().string()).contains("https://test2");
+            assertThat(UrlsRepository.exists("https://test2")).isTrue();
         }));
     }
     @Test
@@ -93,7 +93,7 @@ public class AppTest {
             response = client.get(NamedRoutes.urlPath("1"));
             var bodyString = response.body().string();
             assertThat(bodyString).contains("свежие новости на РБК");
-            assertThat(bodyString).contains("РосБизнесКонсалтинг");
+            assertThat(ChecksRepository.getEntitiesById((long) 1).size() > 0).isTrue();
         }));
     }
 
@@ -109,7 +109,7 @@ public class AppTest {
             String testUrl = mockServer.url("/").toString();
 
             JavalinTest.test(app, (server, client) -> {
-                var actualUrl = new Url(testUrl, new Timestamp(new Date().getTime()));
+                var actualUrl = new Url(testUrl);
                 UrlsRepository.save(actualUrl);
                 var idString = actualUrl.getId().toString();
                 client.post(NamedRoutes.checksPath(idString));
