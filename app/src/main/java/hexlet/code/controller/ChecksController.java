@@ -24,7 +24,7 @@ public class ChecksController {
         var uri = URI.create(urlPath);
         if (uri.getHost() == null) {
             ctx.sessionAttribute("flash", "Некорректный адрес");
-            ctx.sessionAttribute("flashType", "alert");
+            ctx.sessionAttribute("flashType", "danger");
             ctx.redirect(NamedRoutes.urlPath(url.getId()));
         } else {
             var response = Unirest.get(urlPath).asString();
