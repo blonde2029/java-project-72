@@ -36,7 +36,6 @@ public class ChecksController {
             String description = responsePage.select("meta[name=description]").attr("content");
 
             var urlCheck = new UrlCheck(title, h1, description, statusCode, urlId);
-
             try {
                 ChecksRepository.save(urlCheck);
                 ctx.sessionAttribute("flash", "Страница успешно проверена");

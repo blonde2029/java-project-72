@@ -83,21 +83,6 @@ public class AppTest {
     }
 
     @Test
-    public void testCheckUrl() {
-        JavalinTest.test(app, ((server, client) -> {
-            var requestBody = "url=https://www.rbc.ru";
-            client.post(NamedRoutes.urlsPath(), requestBody);
-
-            var response = client.post(NamedRoutes.checksPath("1"));
-            assertThat(response.code()).isEqualTo(200);
-            response = client.get(NamedRoutes.urlPath("1"));
-            var bodyString = response.body().string();
-            assertThat(bodyString).contains("свежие новости на РБК");
-            assertThat(ChecksRepository.getEntitiesById((long) 1).size() > 0).isTrue();
-        }));
-    }
-
-    @Test
     public void mockTest() throws IOException {
         var body = Files.readString(Paths.get("src/test/resources/test.html")).trim();
         try (MockWebServer mockServer = new MockWebServer()) {

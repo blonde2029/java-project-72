@@ -11,10 +11,9 @@ public final class Url {
     private Long id;
     private String name;
     private Timestamp createdAt;
-
+    private Timestamp lastCheckDate;
+    private Integer lastCheckStatus;
     public Url(String name) {
-        this.id = id;
         this.name = name;
-        this.createdAt = createdAt;
     }
 }

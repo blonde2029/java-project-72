@@ -19,7 +19,6 @@ public class UrlCheck {
 
     public UrlCheck(String title, String h1, String description,
                     Integer statusCode, Long urlId) {
-        this.createdAt = createdAt;
         this.title = title;
         this.h1 = h1;
         this.description = description;

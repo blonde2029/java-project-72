@@ -1,6 +1,5 @@
 @import hexlet.code.util.NamedRoutes
 @import hexlet.code.dto.UrlsPage
-@import hexlet.code.repository.ChecksRepository
 
 @param UrlsPage page
 !{var formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");}
@@ -36,19 +35,13 @@
                             <a href="${NamedRoutes.urlPath(url.getId())}">${url.getName()}</a>
                         </td>
                         <td>
-                            @if (ChecksRepository.getLastCheck(url.getId()).isPresent())
-                            ${ChecksRepository.getLastCheck(url.getId())
-                                .get()
-                                .getCreatedAt()
-                                .toLocalDateTime()
-                                .format(formatter)}
+                            @if (url.getLastCheckDate() != null)
+                                ${url.getLastCheckDate().toLocalDateTime().format(formatter)}
                             @endif
                         </td>
                         <td>
-                            @if (ChecksRepository.getLastCheck(url.getId()).isPresent())
-                            ${ChecksRepository.getLastCheck(url.getId())
-                                .get()
-                                .getStatusCode()}
+                            @if (url.getLastCheckStatus() != null)
+                                ${url.getLastCheckStatus()}
                             @endif
                         </td>
                     </tr>
@@ -60,6 +53,4 @@
         </section>
     </main>
     </body>
-
 `)
-

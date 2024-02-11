@@ -29,10 +29,8 @@ public class UrlsController {
         var urlPath = ctx.formParam("url");
         try {
             var uri = URI.create(urlPath);
-
             var name = uri.getScheme() + "://" + uri.getAuthority();
             var url = new Url(name);
-
             if (uri.getScheme() == null) {
                 ctx.sessionAttribute("flash", "Некорректный URL");
                 ctx.sessionAttribute("flashType", "danger");
@@ -42,7 +40,6 @@ public class UrlsController {
                 ctx.render("pages/mainPage.jte", Collections.singletonMap("page", page));
                 return;
             }
-
             if (UrlsRepository.exists(name)) {
                 ctx.sessionAttribute("flash", "Страница уже существует");
                 ctx.sessionAttribute("flashType", "info");
@@ -62,6 +59,12 @@ public class UrlsController {
 
     public static void index(Context ctx) throws SQLException {
         var urls = UrlsRepository.getEnteties();
+        for (Url url : urls) {
+            if (ChecksRepository.getLastCheck(url.getId()).isPresent()) {
+                url.setLastCheckDate(ChecksRepository.getLastCheck(url.getId()).get().getCreatedAt());
+                url.setLastCheckStatus(ChecksRepository.getLastCheck(url.getId()).get().getStatusCode());
+            }
+        }
         var page = new UrlsPage(urls);
         page.setFlash(ctx.consumeSessionAttribute("flash"));
         page.setFlashType(ctx.consumeSessionAttribute("flashType"));
