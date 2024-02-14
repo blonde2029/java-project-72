@@ -9,7 +9,6 @@ import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.validation.ValidationException;
 import kong.unirest.Unirest;
-import org.apache.commons.validator.routines.UrlValidator;
 import org.jsoup.Jsoup;
 
 import java.net.MalformedURLException;
@@ -24,7 +23,7 @@ public class ChecksController {
                 + urlId + " not found"));
         var urlPath = url.getName();
         var uri = URI.create(urlPath);
-        if (uri.getHost() == null || !isValidURL(urlPath)) {
+        if (uri.getHost() == null) {
             ctx.sessionAttribute("flash", "Некорректный адрес");
             ctx.sessionAttribute("flashType", "danger");
             ctx.redirect(NamedRoutes.urlPath(url.getId()));
@@ -49,10 +48,5 @@ public class ChecksController {
                 ctx.render("pages/urlPage.jte", Collections.singletonMap("page", page));
             }
         }
-    }
-
-    static boolean isValidURL(String url) throws MalformedURLException {
-        UrlValidator validator = new UrlValidator();
-        return validator.isValid(url);
     }
 }
