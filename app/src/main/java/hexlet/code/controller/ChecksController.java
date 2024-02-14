@@ -9,20 +9,22 @@ import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.validation.ValidationException;
 import kong.unirest.Unirest;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.jsoup.Jsoup;
 
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.sql.SQLException;
 import java.util.Collections;
 
 public class ChecksController {
-    public static void create(Context ctx) throws SQLException {
+    public static void create(Context ctx) throws SQLException, MalformedURLException {
         var urlId = ctx.pathParamAsClass("id", Long.class).get();
         var url = UrlsRepository.find(urlId).orElseThrow(() -> new NotFoundResponse("Entity with id "
                 + urlId + " not found"));
         var urlPath = url.getName();
         var uri = URI.create(urlPath);
-        if (uri.getHost() == null) {
+        if (!isValidURL(urlPath)) {
             ctx.sessionAttribute("flash", "Некорректный адрес");
             ctx.sessionAttribute("flashType", "danger");
             ctx.redirect(NamedRoutes.urlPath(url.getId()));
@@ -47,5 +49,10 @@ public class ChecksController {
                 ctx.render("pages/urlPage.jte", Collections.singletonMap("page", page));
             }
         }
+    }
+
+    static boolean isValidURL(String url) throws MalformedURLException {
+        UrlValidator validator = new UrlValidator();
+        return validator.isValid(url);
     }
 }

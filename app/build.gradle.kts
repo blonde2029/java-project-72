@@ -33,7 +33,7 @@ dependencies {
     implementation("com.konghq:unirest-java:3.14.1")
     implementation ("org.jsoup:jsoup:1.17.1")
     implementation("org.jacoco:org.jacoco.core:0.8.10")
-
+    implementation("commons-validator:commons-validator:1.7")
     testImplementation("org.assertj:assertj-core:3.24.2")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
