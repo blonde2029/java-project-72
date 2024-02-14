@@ -11,13 +11,12 @@ import io.javalin.validation.ValidationException;
 import kong.unirest.Unirest;
 import org.jsoup.Jsoup;
 
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.sql.SQLException;
 import java.util.Collections;
 
 public class ChecksController {
-    public static void create(Context ctx) throws SQLException, MalformedURLException {
+    public static void create(Context ctx) throws SQLException {
         var urlId = ctx.pathParamAsClass("id", Long.class).get();
         var url = UrlsRepository.find(urlId).orElseThrow(() -> new NotFoundResponse("Entity with id "
                 + urlId + " not found"));
