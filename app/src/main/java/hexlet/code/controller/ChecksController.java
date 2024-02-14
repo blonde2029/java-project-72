@@ -24,7 +24,7 @@ public class ChecksController {
                 + urlId + " not found"));
         var urlPath = url.getName();
         var uri = URI.create(urlPath);
-        if (!isValidURL(urlPath)) {
+        if (uri.getHost() == null || !isValidURL(urlPath)) {
             ctx.sessionAttribute("flash", "Некорректный адрес");
             ctx.sessionAttribute("flashType", "danger");
             ctx.redirect(NamedRoutes.urlPath(url.getId()));
