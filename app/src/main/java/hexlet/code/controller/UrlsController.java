@@ -59,12 +59,6 @@ public class UrlsController {
 
     public static void index(Context ctx) throws SQLException {
         var urls = UrlsRepository.getEnteties();
-        for (Url url : urls) {
-            if (ChecksRepository.getLastCheck(url.getId()).isPresent()) {
-                url.setLastCheckDate(ChecksRepository.getLastCheck(url.getId()).get().getCreatedAt());
-                url.setLastCheckStatus(ChecksRepository.getLastCheck(url.getId()).get().getStatusCode());
-            }
-        }
         var page = new UrlsPage(urls);
         page.setFlash(ctx.consumeSessionAttribute("flash"));
         page.setFlashType(ctx.consumeSessionAttribute("flashType"));
